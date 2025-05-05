@@ -26,6 +26,12 @@ class ai_object:
       {"role": "user", "content": starter}, 
     ]
 
+  def reset(self):
+    self.conversation = [
+      {"role": "system", "content": "You are a game chat bot. Keep responses very simple."},
+      {"role": "user", "content": starter}, 
+    ]
+
   def ai_start_chat(self):
     response = self.client.responses.create(
     model=model,
