@@ -1,0 +1,75 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>drb</title>
+  <link rel="stylesheet" href="static/css/style.css" type="text/css">
+  <link rel="icon"  href="static/linkedin_photo.jpeg" >
+</head>
+<body>
+    <div class="staticcontainer custom-bg"  style="padding-top: 40px;">
+      
+      <div class="staticcontainer">
+        <div class="staticcontent">
+            <h2> How about a game of 20 questions?</h2>
+        </div>
+       
+      </div>
+    </div>
+    <div></div>
+    <div class="staticcontainer">
+      <div class="staticcontent">
+        <div id="chat-box"></div>
+
+        <input class="chat-input input-container" type="text" id="message" placeholder="Type a message..." autofocus />
+        <button class="chat-input btn-input-container" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+<!--     <div class="container">
+      <div class="content">
+        <a href="https://clownfish-app-8om3z.ondigitalocean.app/dob-soda2" class="button" >
+          A working MVP of mine (credentials available - just reach out!)
+        </a>
+      </div>
+    </div> -->
+    
+  
+    <script>
+        document.getElementById('message').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();  // Prevent default Enter key action (like form submit)
+            sendMessage();  // Call the sendMessage function
+        }
+        });
+
+      async function sendMessage() {
+        const input = document.getElementById('message');
+        const msg = input.value;
+        if (!msg.trim()) return;
+  
+        appendMessage(msg, 'user');
+        input.value = '';
+  
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+  
+        const data = await res.json();
+        appendMessage(data.reply, 'bot');
+      }
+  
+      function appendMessage(msg, sender) {
+        const div = document.createElement('div');
+        div.className = 'message ' + sender;
+        div.textContent = msg;
+        document.getElementById('chat-box').appendChild(div);
+        div.scrollIntoView();
+      }
+    </script>
+</body>
+</html>

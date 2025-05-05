@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, request, jsonify, render_template
+
 
 import logging
 
@@ -12,6 +13,22 @@ def landing_page():
 
     return render_template('index.html',
                            )
+
+@app.route('/twenty_q', methods=['GET'])
+def twenty_q():
+
+    return render_template('twenty_q.html',
+                           )
+
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get('message', '')
+    
+    #trest
+    reply = f"You said: {user_message}"
+
+    return jsonify({'reply': reply})
 
 
 # @app.route('/paper', methods=['GET'])

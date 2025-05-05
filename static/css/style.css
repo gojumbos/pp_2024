@@ -73,3 +73,104 @@ h1 {
 p {
   color: #333;
 }
+
+
+.staticcontainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /*max-width: 1200px;*/
+  margin: 0 auto;
+  padding: 20px;
+  /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+/*  */
+  max-width: 60%;
+  height: auto;
+
+}
+
+.staticcontent {
+  flex: 1;
+  margin-right: 20px;
+  padding: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+/*    */
+  max-width: 90%;
+  height: auto;
+}
+
+.custom-bg {
+  background-image: url('/static/questionmarks.png'); /* update path as needed */
+  background-size: cover;       /* makes image cover the whole container */
+  background-position: center;  /* centers the image */
+  background-repeat: no-repeat; /* prevents tiling */
+  padding: 20px;                /* optional: add spacing inside */
+}
+
+
+
+#chat-box { height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; }
+.message { margin: 5px 0; }
+.user { text-align: right; color: blue; }
+.bot { text-align: left; color: green; }
+
+.chat-input {
+  font-family: Cochin, sans-serif;
+  border-radius: 10;
+}
+
+.input-container {
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  min-width: 60%;
+}
+
+.btn-input-container {
+  /* chat send btn */
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  /* min-width: 60%; */
+  background-color: #f2f2f2;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+
+}
+
+
+
+
+.mini-custom-bg {
+  background-image: url('/static/questionmarks.png'); /* update path as needed */
+  background-size: 50%;       /* makes image cover the whole container */
+  background-position: top left;  /* centers the image */
+  background-repeat: repeat; /* prevents tiling */
+  /*padding: 0px;                /* optional: add spacing inside */
+}
+
+.mini-container {
+  flex: 1;
+  margin-right: 20px;
+  padding: 20px;
+  /* border: 1px solid black; */
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+/*    */
+  max-width: 20%;
+  height: auto;
+}
+
+a {
+  color: #007bff; 
+}
+
+a:visited {
+  color: #007bff;               /* Prevent visited link from turning purple */
+}
+
+
