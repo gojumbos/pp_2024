@@ -173,4 +173,41 @@ a:visited {
   color: #007bff;               /* Prevent visited link from turning purple */
 }
 
+@media (max-width: 768px) {
+  .linkedin-photo {
+    display: none;
+  }
+}
 
+@media (min-width: 768px) {
+  .linkedin-photo-mobile {
+    display: none;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;   /* stack image/text vertically */
+    max-width: 100%;
+  }
+
+   .content {
+    max-width: 100%;
+    margin-right: 0;
+    padding: 10px;
+  }
+
+  .button {
+    max-width: 100%;
+    margin-right: 0;
+    padding: 10px;
+  }
+
+  .mini-container {
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+
+}
