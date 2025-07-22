@@ -26,7 +26,7 @@
         <div id="chat-box"></div>
 
         <input class="chat-input input-container" type="text" id="message" placeholder="Type a message..." autofocus />
-        <button class="chat-input btn-input-container" onclick="sendMessage()">Send</button>
+        <button id="send-button" class="chat-input btn-input-container" >Send</button>
       </div>
     </div>
 <!--     <div class="container">
@@ -39,16 +39,44 @@
     
   
     <script>
-        
+
+        let chatId = null;
 
         document.getElementById('message').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();  // Prevent default Enter key action (like form submit)
-            sendMessage();  // Call the sendMessage function
+            sendMessage(chatId);  // Call the sendMessage function
         }
         });
 
-      async function sendMessage() {
+         document.getElementById('send-button').addEventListener('click', function(event) {
+            event.preventDefault();  // Prevent default Enter key action (like form submit)
+            sendMessage(chatId);  // Call the sendMessage function
+        });
+
+         // start the chat
+      async function startChat() {
+        const res = await fetch('/start_chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: "INIT_CHAT" })
+        });
+        const data = await res.json();
+        appendMessage(data.reply, 'bot');
+        console.log("Chat id", data.chat_id);
+        return data.chat_id;
+      }
+      async function run() {
+          const chatId = await startChat();
+          console.log("Got chatId:", chatId);
+          // Now do whatever you need with it
+          return chatId;
+      }
+
+      chatId = run();
+
+      async function sendMessage(chatId) {
+        const ci = await chatId;
         const input = document.getElementById('message');
         const msg = input.value;
         if (!msg.trim()) return;
@@ -59,7 +87,9 @@
         const res = await fetch('/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: msg })
+          body: JSON.stringify({ message: msg ,
+                                chat_id: ci // make pythonic
+          })
         });
   
         const data = await res.json();
@@ -72,19 +102,16 @@
         div.textContent = msg;
         document.getElementById('chat-box').appendChild(div);
         div.scrollIntoView();
+
       }
 
-      // start the chat
-      async function startChat() {
-        const res = await fetch('/start_chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: "INIT_CHAT" })
-        });
-        const data = await res.json();
-        appendMessage(data.reply, 'bot');
-      }
-      startChat();
+
+      {#startChat().then(chatId => {#}
+      {#    console.log("chatId:", chatId);#}
+      {#    // Use chatId here#}
+      {#  });#}
+      {#console.log('dd')#}
+
     </script>
 </body>
 </html>
