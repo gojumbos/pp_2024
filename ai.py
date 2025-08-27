@@ -32,7 +32,7 @@ class ChatManager:
     self.last_call_time = None
     # an ai is a chat
 
-  def add_chat(self):
+  async def add_chat(self):
     global_id = randint(0,1000)
     while global_id in self.all_ais_dict:
       global_id = randint(0,1000)
@@ -41,29 +41,28 @@ class ChatManager:
     self.all_ais_dict[ai.my_id] = ai
     return ai.my_id
 
-  def start_chat(self, global_id):
+  async def start_chat(self, global_id):
     # start chat after adding ai
     ai = self.all_ais_dict[int(global_id)]
-    return ai.ai_start_chat()
+    return await ai.ai_start_chat()
 
-  def get_convo(self, global_id):
+  async def get_convo(self, global_id):
     # get ai given its global id
 
     return self.all_ais_dict[int(global_id)].conversation
 
-  def send_chat(self, global_id, user_message):
-    return self.all_ais_dict[int(global_id)].ai_chat(user_message)
+  async def send_chat(self, global_id, user_message):
+    return await self.all_ais_dict[int(global_id)].ai_chat(user_message)
 
-  def remove_chat(self, ai):
+  async def remove_chat(self, ai):
     del self.all_ais_dict[ai.my_id]
 
-  def clear_all_chats(self):
+  async def clear_all_chats(self):
     # reset all after time period elapsed
     self.all_ais_dict = {}
 
-  def chat_count(self):
+  async def chat_count(self):
     return len(self.all_ais_dict)
-
 
 
 CONVO_STUB = [
@@ -80,35 +79,35 @@ class AIObject:
     self.my_id = global_id
     self.solution = None
 
-  def incr_ctr(self):
+  async def incr_ctr(self):
     self.question_ctr += 1
 
-  def question_limit_hit(self):
+  async def question_limit_hit(self):
     return self.question_ctr == 20
 
-  def reset(self):
+  async def reset(self):
     self.conversation = CONVO_STUB
     self.question_ctr = 0
 
-  def ai_start_chat(self):
+  async def ai_start_chat(self):
     response = self.client.responses.create(
-    model=model,
-    input=self.conversation
+      model=model,
+      input=self.conversation
     )
     solution = re.findall(r'{(.*?)}', response.output_text)
     self.solution = solution
     text = re.sub(r'{.*?}', '', response.output_text)
     self.conversation.append({"role": "assistant", "content": response.output_text})
-    self.incr_ctr()
+    await self.incr_ctr()
     return text
 
-  def ai_chat(self, prompt):
+  async def ai_chat(self, prompt):
     prompt = prompt + f' <System: Question number {self.question_ctr}>'
     self.conversation.append({"role": "user", "content": prompt})
     response = self.client.responses.create(
-    model=model,
-    input=self.conversation
+      model=model,
+      input=self.conversation
     )
     self.conversation.append({"role": "assistant", "content": response.output_text})
-    self.incr_ctr()
+    await self.incr_ctr()
     return response.output_text
